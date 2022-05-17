@@ -35,6 +35,9 @@
             android:name=".testActivity">
         </activity>
 
+        <activity android:name=".popupActivity"
+            android:theme="@style/popupTheme" android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,16 +34,27 @@ import com.bumptech.glide.Glide;
 public class randomActivity extends AppCompatActivity {
 
     int random;
-    Button buttonhome,buttonretry,buttonpopup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random);
 
-        buttonhome = findViewById(R.id.rbuttonhome);
-        buttonretry = findViewById(R.id.rbuttonretry);
-        buttonpopup = findViewById(R.id.rbuttonpopup);
+        loadingDialog loadingDialog = new loadingDialog(randomActivity.this);
+
+        Button buttonhome = findViewById(R.id.rbuttonhome);
+        Button buttonretry = findViewById(R.id.rbuttonretry);
+        Button buttonpopup = findViewById(R.id.rbuttonpopup);
+
+        // 파이어베이스에서 불러오는 동안 로딩화면
+        loadingDialog.startLoadingDialog();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dissmissDialog();
+            }
+        },3000);
 
         // 홈으로
         buttonhome.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +70,15 @@ public class randomActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), randomActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 팝업 메뉴
+        buttonpopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),popupActivity.class);
                 startActivity(intent);
             }
         });
